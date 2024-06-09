@@ -18,13 +18,6 @@ public class TestItem extends Item {
     public TestItem(Settings settings) {
         super(settings);
     }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ScreenFlashHandler.addScreenFlash(new ScreenFlashInstance(300, 1, 1, 1));
-        return TypedActionResult.success(this.getDefaultStack());
-    }
-
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (!context.getPlayer().getWorld().isClient) {
