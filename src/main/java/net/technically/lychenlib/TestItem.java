@@ -21,17 +21,20 @@ public class TestItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (!user.getWorld().isClient) {
-            // Create a screenshake instance and add it to the handler
-            ScreenshakeInstance screenshake = new ScreenshakeInstance(80);
-            new Detonation(world, 10f).detonate(Detonation.DetonationType.BLOCKS, user.getX(),user.getY(),user.getZ());
-            screenshake.setIntensity(5f); // Example intensity
-            ScreenshakeHandler.addScreenshake(screenshake);
+        ScreenFlashHandler.addScreenFlash(new ScreenFlashInstance(300, 1, 1, 1));
+        return TypedActionResult.success(this.getDefaultStack());
+    }
 
-            // Play a sound effect to indicate the item has been used
-            user.getWorld().playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 1.0F, 1.0F);
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        if (!context.getPlayer().getWorld().isClient) {
+            ScreenshakeInstance screenshake = new ScreenshakeInstance(80);
+            new Detonation(context.getPlayer().getWorld(), 10f).detonate(Detonation.DetonationType.BLOCKS, context.getPlayer().getX(),context.getPlayer().getY(),context.getPlayer().getZ());
+            screenshake.setIntensity(5f);
+            ScreenshakeHandler.addScreenshake(screenshake);
+            context.getPlayer().getWorld().playSound(null, context.getPlayer().getX(), context.getPlayer().getY(), context.getPlayer().getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 1.0F, 1.0F);
         }
 
-        return TypedActionResult.success(this.getDefaultStack());
+        return super.useOnBlock(context);
     }
 }
