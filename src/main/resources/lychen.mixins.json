@@ -3,10 +3,8 @@
 	"package": "net.technically.lychenlib.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-
 	],
 	"client": [
-		"CameraMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
